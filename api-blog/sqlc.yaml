@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: database/queries
+    schema: database/schema
+    gen:
+      go:
+        emit_json_tags: true
+        emit_prepared_queries: true
+        emit_interface: false
+        emit_exact_table_names: true
+        package: "database"
+        out: "database"
+        sql_package: "pgx/v5"
