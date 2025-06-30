@@ -1,11 +1,12 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { CalendarDays, User, ArrowLeft } from "lucide-react"
-
 import { getMarkdownData } from "@/lib/markdown";
+import { Metadata, ResolvingMetadata } from "next";
 
-interface BlogPostPageProps {
-  params: Promise<{ slug: string }>
+type Props = {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
 }
 
 type Article = {
@@ -15,6 +16,37 @@ type Article = {
   slug: string
   created_at: Date
 }
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const slug = params.slug
+
+  // fetch data
+  const product = await fetch(`http://localhost:8080/posts/${slug}`).then((res) => res.json())
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || []
+
+  return {
+    title: product.title,
+    description: product.description,
+    openGraph: {
+      images: ['/some-specific-page-image.jpg', ...previousImages],
+    },
+  }
+}
+
+export async function generateStaticParams() {
+  const posts = await fetch('http://localhost:8080/posts').then((res) => res.json())
+
+  return posts.map((post: Article) => ({
+    slug: post.slug,
+  }))
+}
+
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
 

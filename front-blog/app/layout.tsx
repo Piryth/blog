@@ -9,10 +9,28 @@ import {Footer} from "@/components/footer"
 const inter = Inter({subsets: ["latin"]})
 
 export const metadata: Metadata = {
-  title: "Arnaud Endignous - Software Engineer & Web Artisan",
-  description:
-    "Passionate software engineer and web artisan. Scalability and performance",
-  generator: 'v0.dev'
+  title: {
+    template: '%s | Arnaud Endignous',
+    default: 'Arnaud Endignous - Software Engineer & Web Artisan',
+  },
+  description: 'Passionate software engineer and web artisan. Scalability and performance',
+  keywords: ['Next.js', 'React', 'JavaScript', 'TypeScript', 'Software Engineer', 'Web Artisan'],
+  authors: [{ name: 'Arnaud Endignous', url: 'https://www.linkedin.com/in/arnaud-endignous/' }],
+  openGraph: {
+    title: 'Arnaud Endignous - Software Engineer & Web Artisan',
+    description: 'Passionate software engineer and web artisan. Scalability and performance',
+    url: 'https://arnaud-endignous.com',
+    siteName: 'Arnaud Endignous',
+    images: [
+      {
+        url: 'https://arnaud-endignous.com/og-image.png', // To be created
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
 }
 
 export default function RootLayout({
