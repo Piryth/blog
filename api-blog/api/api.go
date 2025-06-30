@@ -1,10 +1,10 @@
 package api
 
 import (
+	"blog/api-blog/api/handlers"
+	"blog/api-blog/database"
 	"cloud.google.com/go/storage"
 	"github.com/gin-gonic/gin"
-	"piryth.fr/blog/api/handlers"
-	"piryth.fr/blog/database"
 )
 
 func SetupRoutes(r *gin.Engine, queries *database.Queries, gcsClient *storage.Client) {

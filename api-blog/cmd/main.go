@@ -1,6 +1,8 @@
 package main
 
 import (
+	"blog/api-blog/api"
+	"blog/api-blog/database"
 	"cloud.google.com/go/storage"
 	"context"
 	"encoding/json"
@@ -12,12 +14,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"piryth.fr/blog/api"
-	"piryth.fr/blog/database"
 )
 
 func main() {
-	err := godotenv.Load()
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}

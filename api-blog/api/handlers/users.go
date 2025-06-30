@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"piryth.fr/blog/database"
+	"blog/api-blog/database"
 	"strconv"
 )
 

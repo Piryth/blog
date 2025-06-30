@@ -5,7 +5,7 @@ import (
 	"github.com/gosimple/slug"
 	"log"
 	"net/http"
-	"piryth.fr/blog/database"
+	"blog/api-blog/database"
 	"strconv"
 )
 

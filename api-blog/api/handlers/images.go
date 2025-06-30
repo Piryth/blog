@@ -1,16 +1,15 @@
 package handlers
 
 import (
+	"cloud.google.com/go/storage"
 	"context"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"time"
-
-	"cloud.google.com/go/storage"
-	"github.com/gin-gonic/gin"
 )
 
 type ImageHandler struct {
