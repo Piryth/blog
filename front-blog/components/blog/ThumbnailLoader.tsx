@@ -34,6 +34,7 @@ export const ThumbnailLoader = ({slug}: { slug: string }) => {
       alt={`Thumbnail for ${slug}`}
       width={400}
       height={200}
+      priority
       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
     />
   )

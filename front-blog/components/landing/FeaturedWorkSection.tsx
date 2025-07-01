@@ -21,7 +21,7 @@ export default function FeaturedWork() {
             <div className="group">
               <div className="relative h-60 overflow-hidden mb-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
                 <Image
-                  src="https://storage.googleapis.com/bucket-blog-app/pflab.png"
+                  src="https://storage.googleapis.com/bucket-blog-app/pflab.webp"
                   alt={`Portfolio Lab`}
                   fill
                   className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500"

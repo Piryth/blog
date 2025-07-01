@@ -5,13 +5,12 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Mail, MapPin, Github, Linkedin } from "lucide-react"
+import { Github, Linkedin } from "lucide-react"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
   })
 
@@ -26,7 +25,7 @@ export default function ContactPage() {
     setErrorMessage('')
 
     try {
-      const response = await fetch('/contact/', {
+      const response = await fetch('http://localhost:8080/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +41,6 @@ export default function ContactPage() {
       setFormData({
         name: "",
         email: "",
-        subject: "",
         message: "",
       })
       setSubmitStatus('success')
@@ -133,20 +131,6 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                      Subject *
-                    </label>
-                    <input
-                      type="text"
-                      id="subject"
-                      required
-                      value={formData.subject}
-                      onChange={(e) => handleChange("subject", e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
                     <label htmlFor="message" className="block text-sm font-medium mb-2">
                       Message *
                     </label>
@@ -191,3 +175,4 @@ export default function ContactPage() {
     </div>
   )
 }
+

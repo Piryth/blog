@@ -19,7 +19,7 @@ const projects: ProjectType[] = [
     title: "PortfolioLab",
     description:
       "Simple CMS application for creating CVs and managing portfolios",
-    image: "pflab.png",
+    image: "https://storage.googleapis.com/bucket-blog-app/pflab.webp",
     technologies: ["React", "Express", "MongoDB"],
     githubUrl: "https://github.com/cedric-champeix/PortfolioLab_Frontend",
     featured: true,
@@ -53,6 +53,7 @@ export default function PortfolioPage() {
                     alt={project.title}
                     width={500}
                     height={300}
+                    priority
                     className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">

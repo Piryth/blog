@@ -1,11 +1,10 @@
 import { MetadataRoute } from 'next'
 
-
 type Post = {
     slug: string;
     created_at: string;
 }
- 
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const res = await fetch('https://api.arnaud-endignous.com/posts');
