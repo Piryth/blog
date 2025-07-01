@@ -12,6 +12,7 @@ func SetupRoutes(r *gin.Engine, queries *database.Queries, gcsClient *storage.Cl
 	postHandler := &handlers.PostHandler{Queries: queries}
 	userHandler := &handlers.UserHandler{Queries: queries}
 	imageHandler := &handlers.ImageHandler{GCSClient: gcsClient}
+	sendHandler := &handlers.SendHandler{}
 
 	// Define the routes
 	r.POST("/posts", postHandler.CreatePost)
@@ -28,4 +29,7 @@ func SetupRoutes(r *gin.Engine, queries *database.Queries, gcsClient *storage.Cl
 
 	r.POST("/images/upload", imageHandler.UploadImage)
 
+	r.POST("/send", sendHandler.SendMessage)
+
 }
+

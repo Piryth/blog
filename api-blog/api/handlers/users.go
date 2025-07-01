@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"blog/api-blog/database"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"blog/api-blog/database"
 	"strconv"
 )
 
