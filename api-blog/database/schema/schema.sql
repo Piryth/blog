@@ -22,6 +22,19 @@ CREATE TABLE IF NOT EXISTS posts
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS categories
+(
+    id          SERIAL PRIMARY KEY,
+    name        varchar not null unique
+);
+
+CREATE TABLE IF NOT EXISTS postCategories
+(
+    id      SERIAL PRIMARY KEY,
+    post_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL
+);
+
 -- Add foreign key constraint to posts table
 ALTER TABLE posts
     ADD CONSTRAINT fk_user

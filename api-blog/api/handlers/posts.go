@@ -1,11 +1,11 @@
 package handlers
 
 import (
+	"blog/api-blog/database"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
 	"log"
 	"net/http"
-	"blog/api-blog/database"
 	"strconv"
 )
 
@@ -15,11 +15,12 @@ type PostHandler struct {
 
 func (h *PostHandler) CreatePost(c *gin.Context) {
 	var req struct {
-		Title        string `json:"title"`
-		Content      string `json:"content"`
-		Description  string `json:"description"`
-		UserID       int32  `json:"user_id"`
-		ThumbnailUrl string `json:"thumbnail_url"`
+		Title        string  `json:"title"`
+		Content      string  `json:"content"`
+		Description  string  `json:"description"`
+		UserID       int32   `json:"user_id"`
+		ThumbnailUrl *string `json:"thumbnail_url"`
+		Categories   string  `json:"categories"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -35,6 +36,7 @@ func (h *PostHandler) CreatePost(c *gin.Context) {
 		Description:  req.Description,
 		Slug:         slugTitle,
 		ThumbnailUrl: req.ThumbnailUrl,
+		Categories:   req.Categories,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -79,9 +81,10 @@ func (h *PostHandler) UpdatePost(c *gin.Context) {
 	log.Print(baseSlug + " is the slug")
 
 	var req struct {
-		Title        string `json:"title"`
-		Content      string `json:"content"`
-		ThumbnailUrl string `json:"thumbnail_url"`
+		Title        string  `json:"title"`
+		Content      string  `json:"content"`
+		ThumbnailUrl *string `json:"thumbnail_url"`
+		Categories   string  `json:"categories"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -96,6 +99,7 @@ func (h *PostHandler) UpdatePost(c *gin.Context) {
 		Slug:         slugTitle,
 		Slug_2:       baseSlug,
 		ThumbnailUrl: req.ThumbnailUrl,
+		Categories:   req.Categories,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
