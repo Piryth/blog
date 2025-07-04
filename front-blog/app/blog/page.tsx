@@ -12,6 +12,7 @@ type Article = {
   description: string
   created_at: Date
   thumbnail_url?: string
+  categories: string[]
 }
 
 const fetchArticles = async (): Promise<Article[]> => {
@@ -37,6 +38,9 @@ export default async function BlogPage() {
 
   const articlesData = await fetchArticles()
   const categories = await fetchCategories()
+
+  console.log(articlesData.map(article => {
+    console.log(article.categories)}))
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
@@ -71,8 +75,13 @@ export default async function BlogPage() {
             {articlesData.map((post, index) => (
               <Card key={index} className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
                 <div className="relative overflow-hidden">
-                  <ThumbnailLoader slug={post.slug} />
-                  <Badge className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700">Sans catégorie</Badge>
+                  <ThumbnailLoader slug={post.slug}/>
+                  <div className="flex w-[100%]">
+                    {[...new Set(post.categories)].map((category) => (
+                      <Badge key={category + post.created_at} className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700">{category}</Badge>
+                    ))}
+                  </div>
+
                 </div>
                 <CardHeader>
                   <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-2">

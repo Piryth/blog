@@ -25,7 +25,7 @@ export default function HeroSection() {
                 <h1 className="text-4xl md:text-6xl font-light text-slate-900 dark:text-white mb-6">Arnaud Endignous 🇨🇵</h1>
                 <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 font-light">Ingénieur logiciel & Artisan du Web</p>
                 <p className="text-lg text-slate-500 dark:text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-                  Je suis un ingénieur logiciel. Je crée des systèmes solides, scalables et performants.</p>
+                 Je crée des systèmes performants, scalables et écoresponsables.</p>
 
                 <div className="flex justify-center gap-6 mb-16">
                     <Button variant="ghost" size="icon" asChild>

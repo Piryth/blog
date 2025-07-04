@@ -3,7 +3,7 @@ import {ArrowRight, Calendar} from "lucide-react"
 import Link from "next/link"
 import {config} from "@/config"
 
-type Article = {
+type Post = {
   title: string,
   content: string,
   description: string,
@@ -12,16 +12,18 @@ type Article = {
   created_at: Date
 }
 
-export default async function LatestArticles() {
+const fetchPosts = async (): Promise<Post[]> => {
+  const response = await fetch(`${config.apiUri}/api/v1/posts`)
 
-  const response = await fetch(`${config.apiUri}/api/v1/posts`, {method: "GET"})
-
-  console.log(config)
-  if(!response.ok) {
-
+  if (!response.ok) {
+    return []
   }
+  return await response.json()
+}
 
-  const articlesData: Article[] = await response.json();
+export default async function LatestPosts() {
+
+  const articlesData = await fetchPosts()
 
   return <section className="container mx-auto px-4 py-16 border-t border-slate-200 dark:border-slate-800">
     <div className="max-w-4xl mx-auto">

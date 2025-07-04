@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { ExternalLink, Github } from "lucide-react"
 import Image from "next/image"
 
-type ProjectType = {
+type Project = {
   title: string,
   description: string,
   technologies: string[],
@@ -14,7 +14,7 @@ type ProjectType = {
   liveUrl?: string
 }
 
-const projects: ProjectType[] = [
+const projects: Project[] = [
   {
     title: "PortfolioLab",
     description:
@@ -28,7 +28,6 @@ const projects: ProjectType[] = [
 
 export default function PortfolioPage() {
   const featuredProjects = projects.filter((project) => project.featured)
-  const otherProjects = projects.filter((project) => !project.featured)
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
