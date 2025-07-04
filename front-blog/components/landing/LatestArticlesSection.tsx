@@ -1,19 +1,22 @@
 import {Button} from "@/components/ui/button"
 import {ArrowRight, Calendar} from "lucide-react"
 import Link from "next/link"
+import {config} from "@/config"
 
 type Article = {
   title: string,
   content: string,
   description: string,
   slug: string,
+  categories: string[]
   created_at: Date
 }
 
 export default async function LatestArticles() {
 
-  const response = await fetch("http://localhost:8080/posts", {method: "GET"})
+  const response = await fetch(`${config.apiUri}/api/v1/posts`, {method: "GET"})
 
+  console.log(config)
   if(!response.ok) {
 
   }

@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 import Image from 'next/image';
-
+import { config } from "@/config"
 type Article = {
   title: string
   slug: string
@@ -14,10 +14,9 @@ type Article = {
 export const ThumbnailLoader = ({slug}: { slug: string }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("/placeholder.svg")
 
-
   useEffect(() => {
     async function fetchThumbnail() {
-      const response = await fetch(`http://localhost:8080/posts/${slug}`)
+      const response = await fetch(`/api/posts/${slug}`)
       const data: Article = await response.json()
 
       if (data.thumbnail_url !== null) {

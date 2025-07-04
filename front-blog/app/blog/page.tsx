@@ -4,6 +4,7 @@ import {Badge} from "@/components/ui/badge"
 import {Calendar, Clock, ArrowRight} from "lucide-react"
 import Link from "next/link"
 import {ThumbnailLoader} from "@/components/blog/ThumbnailLoader";
+import {config} from "@/config";
 
 type Article = {
   title: string
@@ -13,11 +14,29 @@ type Article = {
   thumbnail_url?: string
 }
 
+const fetchArticles = async (): Promise<Article[]> => {
+  const response = await fetch(`${config.apiUri}/api/v1/posts`)
+
+  if (!response.ok) {
+    return []
+  }
+  return await response.json()
+}
+
+const fetchCategories = async (): Promise<string[]> => {
+  const response = await fetch(`${config.apiUri}/api/v1/categories`)
+
+  if (!response.ok) {
+    return []
+  }
+  return await response.json()
+}
+
+
 export default async function BlogPage() {
 
-  const response = await fetch("http://localhost:8080/posts", {method: "GET"})
-
-  const articlesData: Article[] = await response.json();
+  const articlesData = await fetchArticles()
+  const categories = await fetchCategories()
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
@@ -29,15 +48,18 @@ export default async function BlogPage() {
             Quelques articles qui reflètent mes pensées 🙂
           </p>
 
-          {/* Search and Filter */}
+          {/* Categories */}
           <div className="max-w-2xl mx-auto">
             <div className="flex flex-wrap justify-center gap-2">
-              <Button
-                size="sm"
-                className="rounded-full"
-              >
-                Sans catégorie
-              </Button>
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  size="sm"
+                  className="rounded-full"
+                >
+                  {category}
+                </Button>
+              ))}
             </div>
           </div>
         </div>

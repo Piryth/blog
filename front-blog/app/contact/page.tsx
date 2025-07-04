@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Github, Linkedin } from "lucide-react"
+import {config} from "@/config";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ export default function ContactPage() {
     setErrorMessage('')
 
     try {
-      const response = await fetch('http://localhost:8080/send', {
+      const response = await fetch(`${config.apiUri}/api/v1/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
