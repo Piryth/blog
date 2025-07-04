@@ -9,10 +9,10 @@ export default function FeaturedWork() {
     <section className="container mx-auto px-4 py-16 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-12">
-          <h2 className="text-2xl font-light text-slate-900 dark:text-white">Selected Work</h2>
+          <h2 className="text-2xl font-light text-slate-900 dark:text-white">Mon travail en exemples</h2>
           <Button variant="ghost" asChild>
             <Link href="/portfolio" className="text-sm">
-              View All <ArrowRight className="ml-2 h-4 w-4" />
+              Voir le reste <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </div>
@@ -27,9 +27,9 @@ export default function FeaturedWork() {
                   className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">Portfolio Lab</h3>
+              <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">PortfolioLab</h3>
               <p className="text-slate-600 dark:text-slate-400 text-sm mb-3 leading-relaxed">
-                Simple CMS application for creating CVs and managing portfolios
+                Mini CMS spécialisé dans la rédaction de CVs et portfolios étudiants
               </p>
               <div className="flex gap-2">
                 <Badge variant="outline" className="text-xs">

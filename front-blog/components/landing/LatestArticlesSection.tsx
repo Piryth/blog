@@ -14,14 +14,16 @@ export default async function LatestArticles() {
 
   const response = await fetch("http://localhost:8080/posts", {method: "GET"})
 
-  const articlesData: Article[] = await response.json();
+  if(!response.ok) {
 
-  console.log(articlesData)
+  }
+
+  const articlesData: Article[] = await response.json();
 
   return <section className="container mx-auto px-4 py-16 border-t border-slate-200 dark:border-slate-800">
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-12">
-        <h2 className="text-2xl font-light text-slate-900 dark:text-white">Latest Articles</h2>
+        <h2 className="text-2xl font-light text-slate-900 dark:text-white">Derniers Articles</h2>
         <Button variant="ghost" asChild>
           <Link href="/blog" className="text-sm">
             View All <ArrowRight className="ml-2 h-4 w-4"/>
@@ -47,7 +49,6 @@ export default async function LatestArticles() {
                 </div>
               </div>
             </Link>
-
           </article>
         ))}
       </div>

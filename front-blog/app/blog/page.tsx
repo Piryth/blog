@@ -26,7 +26,7 @@ export default async function BlogPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">Blog & Articles</h1>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
-            Some articles that reflects my thoughts 🙂
+            Quelques articles qui reflètent mes pensées 🙂
           </p>
 
           {/* Search and Filter */}
@@ -36,7 +36,7 @@ export default async function BlogPage() {
                 size="sm"
                 className="rounded-full"
               >
-                No Category
+                Sans catégorie
               </Button>
             </div>
           </div>
@@ -50,7 +50,7 @@ export default async function BlogPage() {
               <Card key={index} className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
                 <div className="relative overflow-hidden">
                   <ThumbnailLoader slug={post.slug} />
-                  <Badge className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700">No category</Badge>
+                  <Badge className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700">Sans catégorie</Badge>
                 </div>
                 <CardHeader>
                   <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-2">

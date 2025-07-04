@@ -9,19 +9,16 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Arnaud Endignous</h3>
             <p className="text-sm text-muted-foreground">
-              Software Engineer & Web Artisan | crafting beautiful digital experiences.
+              Ingénieur logiciel & Artisan du Web| construire des expériences numériques inoubliables.
             </p>
             <div className="flex space-x-4">
-              <Link href="https://github.com" className="text-muted-foreground hover:text-primary">
+              <Link href="https://github.com/Piryth" aria-label="Visitez mon profil Github" className="text-muted-foreground hover:text-primary">
                 <Github className="h-5 w-5" />
               </Link>
-              <Link href="https://linkedin.com" className="text-muted-foreground hover:text-primary">
+              <Link href="https://linkedin.com/in/arnaud-endignous" aria-label="Visitez mon profil LinkedIn" className="text-muted-foreground hover:text-primary">
                 <Linkedin className="h-5 w-5" />
               </Link>
-              <Link href="https://twitter.com" className="text-muted-foreground hover:text-primary">
-                <Twitter className="h-5 w-5" />
-              </Link>
-              <Link href="mailto:hello@example.com" className="text-muted-foreground hover:text-primary">
+              <Link href="mailto:arnaud@endignous.fr" aria-label="Contactez moi par email" className="text-muted-foreground hover:text-primary">
                 <Mail className="h-5 w-5" />
               </Link>
             </div>
@@ -32,7 +29,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/" className="text-muted-foreground hover:text-primary">
-                  Home
+                  Accueil
                 </Link>
               </li>
               <li>
@@ -51,9 +48,9 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">Services</h4>
             <ul className="space-y-2 text-sm">
-              <li className="text-muted-foreground">Web Development</li>
+              <li className="text-muted-foreground">Développement Web</li>
               <li className="text-muted-foreground">Backend / API design</li>
-              <li className="text-muted-foreground">Business automations</li>
+              <li className="text-muted-foreground">Automatisation business</li>
             </ul>
           </div>
 
@@ -63,7 +60,7 @@ export function Footer() {
               <li className="text-muted-foreground">arnaud@endignous.fr</li>
               <li>
                 <Link href="/contact" className="text-muted-foreground hover:text-primary">
-                  Get in touch
+                  Me contacter
                 </Link>
               </li>
             </ul>

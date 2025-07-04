@@ -11,9 +11,9 @@ export default function ServicesSection() {
             <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
               <Code className="h-6 w-6 text-slate-600 dark:text-slate-400" />
             </div>
-            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-3">Development</h3>
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-3">Développement</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-              Scalable applications
+              Applications & Scalabilité
             </p>
           </div>
 
@@ -21,9 +21,9 @@ export default function ServicesSection() {
             <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
               <Bot className="h-6 w-6 text-slate-600 dark:text-slate-400" />
             </div>
-            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-3">Automations</h3>
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-3">Automatisations</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-              Reinventing your workflow and processes
+              Réinventez vos workflows et processus
             </p>
           </div>
 
@@ -31,9 +31,9 @@ export default function ServicesSection() {
             <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
               <Zap className="h-6 w-6 text-slate-600 dark:text-slate-400" />
             </div>
-            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-3">Optimization</h3>
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-3">Optimisation</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-              Performance optimization for speed, accessibility, and SEO.
+              Optimisation des performances, du SEO et de l'accessibilité
             </p>
           </div>
         </div>

@@ -62,9 +62,9 @@ export default function ContactPage() {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">Ready to talk ?</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">On discute ?</h1>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Let's discuss how we can work together to bring your ideas to life.
+            Voyons comment donner vie à vos projets
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function ContactPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-xl">Follow Me</CardTitle>
-                <CardDescription>Connect with me on social media</CardDescription>
+                <CardDescription>Ajoutez moi sur mes résaux</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex gap-4">
@@ -96,15 +96,15 @@ export default function ContactPage() {
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">Send a Message</CardTitle>
-                <CardDescription>Tell me about your project and I'll get back to you within 24 hours</CardDescription>
+                <CardTitle className="text-2xl">Me contacter</CardTitle>
+                <CardDescription>Racontez moi votre projets. Je reviens vers vous.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-2">
-                        Name *
+                      <label htmlFor="name" id="name-label" className="block text-sm font-medium mb-2">
+                        Nom *
                       </label>
                       <input
                         type="text"
@@ -113,10 +113,11 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={(e) => handleChange("name", e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        aria-describedby="name-label"
                       />
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-2">
+                      <label htmlFor="email" id="email-label" className="block text-sm font-medium mb-2">
                         Email *
                       </label>
                       <input
@@ -126,12 +127,13 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        aria-describedby="email-label"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-2">
+                    <label htmlFor="message" id="message-label" className="block text-sm font-medium mb-2">
                       Message *
                     </label>
                     <textarea
@@ -140,35 +142,34 @@ export default function ContactPage() {
                       rows={6}
                       value={formData.message}
                       onChange={(e) => handleChange("message", e.target.value)}
-                      placeholder="Tell me about your project, timeline, and any specific requirements..."
+                      placeholder="Dites m'en plus sur vos projets, vos délais et vos spécifications."
                       className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical"
+                      aria-describedby="message-label"
                     />
                   </div>
 
                   {submitStatus === 'success' && (
                     <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800">
-                      Your message has been sent successfully! We'll get back to you soon.
+                      Le messagé a été envoyé ! Je reviens vers vous au plus vite.
                     </div>
                   )}
 
                   {submitStatus === 'error' && (
                     <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800">
-                      Error sending message: {errorMessage}. Please try again.
+                      Je n'ai pas pu envoyer le message: {errorMessage}. Veuillez réessayer plus tard.
                     </div>
                   )}
-
                   <Button
                     type="submit"
                     size="lg"
                     className="w-full"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                    {isSubmitting ? 'Ça part...' : 'Envoyer'}
                   </Button>
                 </form>
               </CardContent>
             </Card>
-
           </div>
         </div>
       </div>

@@ -23,10 +23,9 @@ export default function HeroSection() {
                     />
                 </div>
                 <h1 className="text-4xl md:text-6xl font-light text-slate-900 dark:text-white mb-6">Arnaud Endignous 🇨🇵</h1>
-                <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 font-light">Software Engineer & Web Artisan</p>
+                <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 font-light">SIngénieur logiciel & Artisan du Web</p>
                 <p className="text-lg text-slate-500 dark:text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-                    I'm a passionate software engineer and web artisan. I create robust software systems that allies robustness, scalability and performance.
-                </p>
+                  Je suis un ingénieur logiciel. Je crée des systèmes solides, scalables et performants.</p>
 
                 <div className="flex justify-center gap-6 mb-16">
                     <Button variant="ghost" size="icon" asChild>

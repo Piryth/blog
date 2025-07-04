@@ -1,7 +1,8 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
+  "name": "blog",
+  "version": "1.0.0-SNAPSHOT",
   "private": true,
+  "sideEffects": false,
   "scripts": {
     "build": "next build",
     "dev": "next dev",
@@ -60,6 +61,7 @@
     "recharts": "2.15.0",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
+    "remark-images": "^4.1.0",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
