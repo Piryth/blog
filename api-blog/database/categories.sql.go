@@ -32,6 +32,20 @@ func (q *Queries) DeleteCategory(ctx context.Context, name string) error {
 	return err
 }
 
+const getCategoryByName = `-- name: GetCategoryByName :one
+SELECT id, name
+FROM categories
+WHERE name = $1
+LIMIT 1
+`
+
+func (q *Queries) GetCategoryByName(ctx context.Context, name string) (Categories, error) {
+	row := q.db.QueryRow(ctx, getCategoryByName, name)
+	var i Categories
+	err := row.Scan(&i.ID, &i.Name)
+	return i, err
+}
+
 const listCategories = `-- name: ListCategories :many
 SELECT name
 FROM categories

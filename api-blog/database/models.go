@@ -22,8 +22,8 @@ type Postcategories struct {
 type Posts struct {
 	ID           int32            `json:"id"`
 	Title        string           `json:"title"`
-	Content      string           `json:"content"`
 	Slug         string           `json:"slug"`
+	Content      string           `json:"content"`
 	Description  string           `json:"description"`
 	ThumbnailUrl string           `json:"thumbnail_url"`
 	UserID       int32            `json:"user_id"`

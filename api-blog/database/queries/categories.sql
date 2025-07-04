@@ -3,6 +3,12 @@ INSERT INTO categories (name)
 VALUES ($1)
 RETURNING id, name;
 
+-- name: GetCategoryByName :one
+SELECT id, name
+FROM categories
+WHERE name = $1
+LIMIT 1;
+
 -- name: ListCategories :many
 SELECT name
 FROM categories

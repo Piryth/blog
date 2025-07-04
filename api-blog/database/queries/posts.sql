@@ -13,10 +13,14 @@ SELECT p.id,
        p.user_id,
        p.created_at,
        p.updated_at,
-       u.name AS author_name
+       u.name AS author_name,
+       array_agg(c.name) AS categories
 FROM posts p
          JOIN users u ON p.user_id = u.id
+         LEFT JOIN postcategories pc ON p.id = pc.post_id
+         LEFT JOIN categories c ON pc.category_id = c.id
 WHERE p.slug = $1
+GROUP BY p.id, u.name
 LIMIT 1;
 
 -- name: ListPosts :many
@@ -28,9 +32,13 @@ SELECT p.id,
        p.user_id,
        p.created_at,
        p.updated_at,
-       u.name AS author_name
+       u.name AS author_name,
+       array_agg(c.name) AS categories
 FROM posts p
          JOIN users u ON p.user_id = u.id
+         LEFT JOIN postcategories pc ON p.id = pc.post_id
+         LEFT JOIN categories c ON pc.category_id = c.id
+GROUP BY p.id, u.name
 ORDER BY p.created_at DESC
 LIMIT $1 OFFSET $2;
 
@@ -47,4 +55,4 @@ RETURNING id, title, description, content, slug, thumbnail_url, user_id, created
 -- name: DeletePost :exec
 DELETE
 FROM posts
-WHERE id = $1;
+WHERE slug = $1;

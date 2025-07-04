@@ -15,13 +15,14 @@ type PostHandler struct {
 
 func (h *PostHandler) CreatePost(c *gin.Context) {
 	var req struct {
-		Title        string  `json:"title"`
-		Content      string  `json:"content"`
-		Description  string  `json:"description"`
-		UserID       int32   `json:"user_id"`
-		ThumbnailUrl *string `json:"thumbnail_url"`
-		Categories   string  `json:"categories"`
+		Title        string   `json:"title"`
+		Content      string   `json:"content"`
+		Description  string   `json:"description"`
+		UserID       int32    `json:"user_id"`
+		ThumbnailUrl *string  `json:"thumbnail_url"`
+		Categories   []string `json:"categories"`
 	}
+
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -29,15 +30,25 @@ func (h *PostHandler) CreatePost(c *gin.Context) {
 
 	slugTitle := slug.Make(req.Title)
 
+	thumbnail := ""
+	if req.ThumbnailUrl != nil {
+		thumbnail = *req.ThumbnailUrl
+	}
+
 	post, err := h.Queries.CreatePost(c, database.CreatePostParams{
 		Title:        req.Title,
 		Content:      req.Content,
 		UserID:       req.UserID,
 		Description:  req.Description,
 		Slug:         slugTitle,
-		ThumbnailUrl: req.ThumbnailUrl,
-		Categories:   req.Categories,
+		ThumbnailUrl: thumbnail,
 	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	// Attach categories to the post
+	err = AttachCategories(c, h.Queries, post.ID, req.Categories)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -50,6 +61,7 @@ func (h *PostHandler) GetPost(c *gin.Context) {
 	post, err := h.Queries.GetPost(c, c.Param("slug"))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		log.Println("Error: ", err.Error())
 		return
 	}
 
@@ -66,6 +78,7 @@ func (h *PostHandler) ListPosts(c *gin.Context) {
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		log.Println("Error: ", err.Error())
 		return
 	}
 
@@ -81,10 +94,10 @@ func (h *PostHandler) UpdatePost(c *gin.Context) {
 	log.Print(baseSlug + " is the slug")
 
 	var req struct {
-		Title        string  `json:"title"`
-		Content      string  `json:"content"`
-		ThumbnailUrl *string `json:"thumbnail_url"`
-		Categories   string  `json:"categories"`
+		Title        string   `json:"title"`
+		Content      string   `json:"content"`
+		ThumbnailUrl *string  `json:"thumbnail_url"`
+		Categories   []string `json:"categories"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -93,13 +106,17 @@ func (h *PostHandler) UpdatePost(c *gin.Context) {
 
 	slugTitle := slug.Make(req.Title)
 
+	thumbnail := ""
+	if req.ThumbnailUrl != nil {
+		thumbnail = *req.ThumbnailUrl
+	}
+
 	post, err := h.Queries.UpdatePost(c, database.UpdatePostParams{
 		Title:        req.Title,
 		Content:      req.Content,
 		Slug:         slugTitle,
 		Slug_2:       baseSlug,
-		ThumbnailUrl: req.ThumbnailUrl,
-		Categories:   req.Categories,
+		ThumbnailUrl: thumbnail,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -107,17 +124,20 @@ func (h *PostHandler) UpdatePost(c *gin.Context) {
 		return
 	}
 
+	// Attach categories to the post
+	err = AttachCategories(c, h.Queries, post.ID, req.Categories)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.JSON(http.StatusOK, post)
 }
 
 func (h *PostHandler) DeletePost(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post ID"})
-		return
-	}
+	baseSlug := c.Param("slug")
 
-	err = h.Queries.DeletePost(c, int32(id))
+	err := h.Queries.DeletePost(c, baseSlug)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

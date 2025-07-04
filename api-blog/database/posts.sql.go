@@ -61,11 +61,11 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (CreateP
 const deletePost = `-- name: DeletePost :exec
 DELETE
 FROM posts
-WHERE id = $1
+WHERE slug = $1
 `
 
-func (q *Queries) DeletePost(ctx context.Context, id int32) error {
-	_, err := q.db.Exec(ctx, deletePost, id)
+func (q *Queries) DeletePost(ctx context.Context, slug string) error {
+	_, err := q.db.Exec(ctx, deletePost, slug)
 	return err
 }
 
@@ -79,10 +79,14 @@ SELECT p.id,
        p.user_id,
        p.created_at,
        p.updated_at,
-       u.name AS author_name
+       u.name AS author_name,
+       array_agg(c.name) AS categories
 FROM posts p
          JOIN users u ON p.user_id = u.id
+         LEFT JOIN postcategories pc ON p.id = pc.post_id
+         LEFT JOIN categories c ON pc.category_id = c.id
 WHERE p.slug = $1
+GROUP BY p.id, u.name
 LIMIT 1
 `
 
@@ -97,6 +101,7 @@ type GetPostRow struct {
 	CreatedAt    pgtype.Timestamp `json:"created_at"`
 	UpdatedAt    pgtype.Timestamp `json:"updated_at"`
 	AuthorName   string           `json:"author_name"`
+	Categories   interface{}      `json:"categories"`
 }
 
 func (q *Queries) GetPost(ctx context.Context, slug string) (GetPostRow, error) {
@@ -113,6 +118,7 @@ func (q *Queries) GetPost(ctx context.Context, slug string) (GetPostRow, error) 
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.AuthorName,
+		&i.Categories,
 	)
 	return i, err
 }
@@ -126,9 +132,13 @@ SELECT p.id,
        p.user_id,
        p.created_at,
        p.updated_at,
-       u.name AS author_name
+       u.name AS author_name,
+       array_agg(c.name) AS categories
 FROM posts p
          JOIN users u ON p.user_id = u.id
+         LEFT JOIN postcategories pc ON p.id = pc.post_id
+         LEFT JOIN categories c ON pc.category_id = c.id
+GROUP BY p.id, u.name
 ORDER BY p.created_at DESC
 LIMIT $1 OFFSET $2
 `
@@ -148,6 +158,7 @@ type ListPostsRow struct {
 	CreatedAt    pgtype.Timestamp `json:"created_at"`
 	UpdatedAt    pgtype.Timestamp `json:"updated_at"`
 	AuthorName   string           `json:"author_name"`
+	Categories   interface{}      `json:"categories"`
 }
 
 func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]ListPostsRow, error) {
@@ -169,6 +180,7 @@ func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]ListPos
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.AuthorName,
+			&i.Categories,
 		); err != nil {
 			return nil, err
 		}

@@ -13,23 +13,28 @@ func SetupRoutes(r *gin.Engine, queries *database.Queries, gcsClient *storage.Cl
 	userHandler := &handlers.UserHandler{Queries: queries}
 	imageHandler := &handlers.ImageHandler{GCSClient: gcsClient}
 	sendHandler := &handlers.SendHandler{}
+	categoryHandler := &handlers.CategoryHandler{Queries: queries}
+
+	v1 := r.Group("/api/v1")
 
 	// Define the routes
-	r.POST("/posts", postHandler.CreatePost)
-	r.GET("/posts/:slug", postHandler.GetPost)
-	r.GET("/posts", postHandler.ListPosts)
-	r.PUT("/posts/:slug", postHandler.UpdatePost)
-	r.DELETE("/posts/:slug", postHandler.DeletePost)
+	v1.POST("/posts", postHandler.CreatePost)
+	v1.GET("/posts/:slug", postHandler.GetPost)
+	v1.GET("/posts", postHandler.ListPosts)
+	v1.PUT("/posts/:slug", postHandler.UpdatePost)
+	v1.DELETE("/posts/:slug", postHandler.DeletePost)
 
-	r.POST("/users", userHandler.CreateUser)
-	r.GET("/users/:id", userHandler.GetUser)
-	r.GET("/users", userHandler.ListUsers)
-	r.PUT("/users/:id", userHandler.UpdateUser)
-	r.DELETE("/users/:id", userHandler.DeleteUser)
+	v1.POST("/users", userHandler.CreateUser)
+	v1.GET("/users/:id", userHandler.GetUser)
+	v1.GET("/users", userHandler.ListUsers)
+	v1.PUT("/users/:id", userHandler.UpdateUser)
+	v1.DELETE("/users/:id", userHandler.DeleteUser)
 
-	r.POST("/images/upload", imageHandler.UploadImage)
+	v1.POST("/images/upload", imageHandler.UploadImage)
 
-	r.POST("/send", sendHandler.SendMessage)
+	v1.POST("contact/send", sendHandler.SendMessage)
+
+	v1.GET("/categories", categoryHandler.ListCategories)
+	v1.DELETE("/categories/:name", categoryHandler.DeleteCategory)
 
 }
-
