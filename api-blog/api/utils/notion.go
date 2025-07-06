@@ -3,37 +3,43 @@ package utils
 import (
 	"context"
 	"github.com/dstotijn/go-notion"
-	"github.com/joho/godotenv"
-	"log"
 	"os"
 )
 
-func pageBlocksToMarkdown() {
-
-	// Load environment variables from .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
-
+func SendToNotion(name, email, message string) error {
 	client := notion.NewClient(os.Getenv("NOTION_API_KEY"))
+	databaseID := os.Getenv("NOTION_DATABASE_ID")
 
-	pagination := notion.PaginationQuery{
-		"",
-		50,
+	properties := &notion.DatabasePageProperties{
+		"Name": notion.DatabasePageProperty{
+			Title: []notion.RichText{
+				{
+					Text: &notion.Text{
+						Content: name,
+					},
+				},
+			},
+		},
+		"Email": notion.DatabasePageProperty{
+			Email: &email,
+		},
+		"Message": notion.DatabasePageProperty{
+			RichText: []notion.RichText{
+				{
+					Text: &notion.Text{
+						Content: message,
+					},
+				},
+			},
+		},
 	}
 
-	blocks, err := client.FindBlockChildrenByID(context.Background(), "21682ad536ce805bb798e59dd58af036", &pagination)
+	params := notion.CreatePageParams{
+		ParentType:             notion.ParentTypeDatabase,
+		ParentID:               databaseID,
+		DatabasePageProperties: properties,
+	}
 
-	log.Println(blocks)
-	// INPUT : page id
-
-	// QUERY : get block children
-
-	// TREATMENT : iterate over each block
-
-	// FOR EACH : convert the bloc into markdown append it
-
-	// OUTPUT : markdown formatted text
-
+	_, err := client.CreatePage(context.Background(), params)
+	return err
 }

@@ -2,10 +2,12 @@
 // versions:
 //   sqlc v1.29.0
 // source: posts.sql
+
 package database
 
 import (
 	"context"
+
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -57,20 +59,34 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (CreateP
 }
 
 const deletePost = `-- name: DeletePost :exec
-DELETE FROM posts
-WHERE id = $1
+DELETE
+FROM posts
+WHERE slug = $1
 `
 
-func (q *Queries) DeletePost(ctx context.Context, id int32) error {
-	_, err := q.db.Exec(ctx, deletePost, id)
+func (q *Queries) DeletePost(ctx context.Context, slug string) error {
+	_, err := q.db.Exec(ctx, deletePost, slug)
 	return err
 }
 
 const getPost = `-- name: GetPost :one
-SELECT p.id, p.title, p.description, p.content, p.slug, p.thumbnail_url, p.user_id, p.created_at, p.updated_at, u.name AS author_name
+SELECT p.id,
+       p.title,
+       p.description,
+       p.content,
+       p.slug,
+       p.thumbnail_url,
+       p.user_id,
+       p.created_at,
+       p.updated_at,
+       u.name AS author_name,
+       array_agg(c.name) AS categories
 FROM posts p
          JOIN users u ON p.user_id = u.id
+         LEFT JOIN postcategories pc ON p.id = pc.post_id
+         LEFT JOIN categories c ON pc.category_id = c.id
 WHERE p.slug = $1
+GROUP BY p.id, u.name
 LIMIT 1
 `
 
@@ -80,11 +96,12 @@ type GetPostRow struct {
 	Description  string           `json:"description"`
 	Content      string           `json:"content"`
 	Slug         string           `json:"slug"`
-	ThumbnailUrl *string           `json:"thumbnail_url"`
+	ThumbnailUrl string           `json:"thumbnail_url"`
 	UserID       int32            `json:"user_id"`
 	CreatedAt    pgtype.Timestamp `json:"created_at"`
 	UpdatedAt    pgtype.Timestamp `json:"updated_at"`
 	AuthorName   string           `json:"author_name"`
+	Categories   interface{}      `json:"categories"`
 }
 
 func (q *Queries) GetPost(ctx context.Context, slug string) (GetPostRow, error) {
@@ -101,14 +118,27 @@ func (q *Queries) GetPost(ctx context.Context, slug string) (GetPostRow, error) 
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.AuthorName,
+		&i.Categories,
 	)
 	return i, err
 }
 
 const listPosts = `-- name: ListPosts :many
-SELECT p.id, p.title, p.description, p.slug, p.thumbnail_url, p.user_id, p.created_at, p.updated_at, u.name AS author_name
+SELECT p.id,
+       p.title,
+       p.description,
+       p.slug,
+       p.thumbnail_url,
+       p.user_id,
+       p.created_at,
+       p.updated_at,
+       u.name AS author_name,
+       array_agg(c.name) AS categories
 FROM posts p
          JOIN users u ON p.user_id = u.id
+         LEFT JOIN postcategories pc ON p.id = pc.post_id
+         LEFT JOIN categories c ON pc.category_id = c.id
+GROUP BY p.id, u.name
 ORDER BY p.created_at DESC
 LIMIT $1 OFFSET $2
 `
@@ -123,11 +153,12 @@ type ListPostsRow struct {
 	Title        string           `json:"title"`
 	Description  string           `json:"description"`
 	Slug         string           `json:"slug"`
-	ThumbnailUrl *string           `json:"thumbnail_url"`
+	ThumbnailUrl string           `json:"thumbnail_url"`
 	UserID       int32            `json:"user_id"`
 	CreatedAt    pgtype.Timestamp `json:"created_at"`
 	UpdatedAt    pgtype.Timestamp `json:"updated_at"`
 	AuthorName   string           `json:"author_name"`
+	Categories   interface{}      `json:"categories"`
 }
 
 func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]ListPostsRow, error) {
@@ -149,6 +180,7 @@ func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]ListPos
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.AuthorName,
+			&i.Categories,
 		); err != nil {
 			return nil, err
 		}
@@ -162,7 +194,11 @@ func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]ListPos
 
 const updatePost = `-- name: UpdatePost :one
 UPDATE posts
-SET title = $1, content = $2, slug = $3, thumbnail_url = $4, updated_at = CURRENT_TIMESTAMP
+SET title         = $1,
+    content       = $2,
+    slug          = $3,
+    thumbnail_url = $4,
+    updated_at    = CURRENT_TIMESTAMP
 WHERE slug = $5
 RETURNING id, title, description, content, slug, thumbnail_url, user_id, created_at, updated_at
 `
@@ -181,7 +217,7 @@ type UpdatePostRow struct {
 	Description  string           `json:"description"`
 	Content      string           `json:"content"`
 	Slug         string           `json:"slug"`
-	ThumbnailUrl *string           `json:"thumbnail_url"`
+	ThumbnailUrl string           `json:"thumbnail_url"`
 	UserID       int32            `json:"user_id"`
 	CreatedAt    pgtype.Timestamp `json:"created_at"`
 	UpdatedAt    pgtype.Timestamp `json:"updated_at"`

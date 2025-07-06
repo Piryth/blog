@@ -1,23 +1,21 @@
 package main
 
 import (
+	"blog/api-blog/api"
+	"blog/api-blog/database"
 	"cloud.google.com/go/storage"
 	"context"
-	"encoding/json"
 	"fmt"
-	"github.com/dstotijn/go-notion"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
-	"piryth.fr/blog/api"
-	"piryth.fr/blog/database"
 )
 
 func main() {
-	err := godotenv.Load()
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
@@ -69,30 +67,4 @@ func CorsMiddleware() gin.HandlerFunc {
 
 		c.Next()
 	}
-}
-
-func pageBlocksToMarkdown() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
-
-	client := notion.NewClient(os.Getenv("NOTION_API_KEY"))
-
-	pagination := notion.PaginationQuery{
-		"",
-		50,
-	}
-
-	blocks, err := client.FindBlockChildrenByID(context.Background(), "21682ad536ce805bb798e59dd58af036", &pagination)
-	if err != nil {
-		log.Fatalf("Impossible to query Notion: %v", err)
-	}
-
-	marshalled, err := json.MarshalIndent(blocks.Results[0], "", " ")
-	if err != nil {
-		log.Fatalf("marshaling error: %s", err)
-	}
-
-	fmt.Print(string(marshalled))
 }

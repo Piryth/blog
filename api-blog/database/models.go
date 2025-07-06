@@ -8,11 +8,22 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type Categories struct {
+	ID   int32  `json:"id"`
+	Name string `json:"name"`
+}
+
+type Postcategories struct {
+	ID         int32 `json:"id"`
+	PostID     int32 `json:"post_id"`
+	CategoryID int32 `json:"category_id"`
+}
+
 type Posts struct {
 	ID           int32            `json:"id"`
 	Title        string           `json:"title"`
-	Content      string           `json:"content"`
 	Slug         string           `json:"slug"`
+	Content      string           `json:"content"`
 	Description  string           `json:"description"`
 	ThumbnailUrl string           `json:"thumbnail_url"`
 	UserID       int32            `json:"user_id"`

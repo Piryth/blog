@@ -1,18 +1,33 @@
 import type React from "react"
 import type {Metadata} from "next"
-import {Inter} from "next/font/google"
 import "./globals.css"
 import {ThemeProvider} from "@/components/theme-provider"
 import {Navigation} from "@/components/navigation"
 import {Footer} from "@/components/footer"
 
-const inter = Inter({subsets: ["latin"]})
-
 export const metadata: Metadata = {
-  title: "Arnaud Endignous - Software Engineer & Web Artisan",
-  description:
-    "Passionate software engineer and web artisan. Scalability and performance",
-  generator: 'v0.dev'
+  title: {
+    template: '%s | Arnaud Endignous',
+    default: 'Arnaud Endignous - Ingénieur logiciel & Artisan du Web',
+  },
+  description: 'Ingénieur logiciel passioné et artisan du web. Scalabilité et performance',
+  keywords: ['Java', 'TypeScript', 'Génie logiciel', 'Web Artisan', 'Scalabilité'],
+  authors: [{ name: 'Arnaud Endignous', url: 'https://www.linkedin.com/in/arnaud-endignous/' }],
+  openGraph: {
+    title: 'Arnaud Endignous - Ingénieur logiciel & Artisan du Web',
+    description: 'Ingénieur logiciel passioné et artisan du web. Scalabilité et performance',
+    url: 'https://arnaud-endignous.com',
+    siteName: 'Arnaud Endignous',
+    images: [
+      {
+        url: 'https://storage.googleapis.com/bucket-blog-app/1749797328343.webp',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'fr_FR',
+    type: 'website',
+  },
 }
 
 export default function RootLayout({
@@ -21,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-    <body className={inter.className}>
+    <html lang="fr" suppressHydrationWarning>
+    <body>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <Navigation/>
       <main>{children}</main>

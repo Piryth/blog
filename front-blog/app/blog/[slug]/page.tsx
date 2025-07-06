@@ -1,8 +1,8 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { CalendarDays, User, ArrowLeft } from "lucide-react"
-
-import { getMarkdownData } from "@/lib/markdown";
+import {Button} from "@/components/ui/button"
+import {ArrowLeft, CalendarDays, User} from "lucide-react"
+import {getMarkdownData} from "@/lib/markdown";
+import {config} from "@/config";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -12,22 +12,19 @@ type Article = {
   title: string,
   content: string,
   description: string,
-  slug: string
+  slug: string,
+  categories: string[]
   created_at: Date
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
+export default async function BlogPostPage({params}: BlogPostPageProps) {
 
-  const { slug } = await params
+  const {slug} = await params
 
-  console.log("slug from params ", slug)
-
-  const response = await fetch(`http://localhost:8080/posts/${slug}`,
-    { method: "GET" })
+  const response = await fetch(`${config.apiUri}/api/v1/posts/${slug}`,
+    {method: "GET"})
 
   const postData: Article = await response.json();
-
-  console.log(postData)
 
   const content = await getMarkdownData(postData.content)
 
@@ -38,7 +35,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="mb-8">
             <Link href="/blog">
               <Button variant="ghost" className="mb-4">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeft className="h-4 w-4 mr-2"/>
                 Back to Blog
               </Button>
             </Link>
@@ -52,24 +49,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <h1 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">{postData.title}</h1>
               <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
                 <div className="flex items-center gap-1">
-                  <CalendarDays className="h-4 w-4" />
+                  <CalendarDays className="h-4 w-4"/>
                   <span>Date</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <User className="h-4 w-4" />
+                  <User className="h-4 w-4"/>
                   <span>Author</span>
                 </div>
               </div>
             </header>
             <div
               className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-slate-800 prose-pre:text-white prose-pre:border prose-code:bg-slate-800 prose-code:text-white prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none dark:prose-invert"
-              dangerouslySetInnerHTML={{ __html: content }}
+              dangerouslySetInnerHTML={{__html: content}}
             />
           </article>
           <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
             <Link href="/blog">
               <Button variant="outline">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeft className="h-4 w-4 mr-2"/>
                 Back to all posts
               </Button>
             </Link>
