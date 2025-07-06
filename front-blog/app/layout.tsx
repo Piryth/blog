@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     siteName: 'Arnaud Endignous',
     images: [
       {
-        url: 'https://storage.googleapis.com/bucket-blog-app/1749797328343.webp', // To be created
+        url: 'https://storage.googleapis.com/bucket-blog-app/1749797328343.webp',
         width: 1200,
         height: 630,
       },
