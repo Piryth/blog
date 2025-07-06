@@ -7,7 +7,6 @@ Welcome to my personal portfolio website with an integrated blog! This fullstack
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [AI use](#ai-use)
-- [API Endpoints](#api-endpoints)
 - [Authors](#authors)
 
 ## Features
