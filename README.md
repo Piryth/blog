@@ -1,30 +1,48 @@
-# Freelance portfolio website
+# Personal Portfolio Website with Blog
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+Welcome to my personal portfolio website with an integrated blog! This fullstack application is built using Next.js for the frontend and Golang for the backend API.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/piryths-projects/v0-freelance-portfolio-website)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/tmKvA2WrIJ5)
+## Table of Contents
 
-## Overview
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [AI use](#ai-use)
+- [API Endpoints](#api-endpoints)
+- [Authors](#authors)
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+## Features
 
-## Deployment
+- Display personal projects and professional experience.
+- Blog section to share articles and insights.
+- Responsive design for various devices.
+- User-friendly interface with smooth navigation.
 
-Your project is live at:
+## Tech Stack
 
-**[https://vercel.com/piryths-projects/v0-freelance-portfolio-website](https://vercel.com/piryths-projects/v0-freelance-portfolio-website)**
+<div id="tools">
 
-## Build your app
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" title="Next.Js" alt="Next.Js" width="40" height="40"/>
 
-Continue building your app on:
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" title="Typescript" alt="Typescript" width="40" height="40"/>
 
-**[https://v0.dev/chat/projects/tmKvA2WrIJ5](https://v0.dev/chat/projects/tmKvA2WrIJ5)**
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" title="Go" alt="Go" width="40" height="40"/>
 
-## How It Works
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" title="PostgreSQL" alt="PostgreSQL" width="40" height="40"/>
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+</div>
+
+## AI Use
+
+In the development of this project, several AI tools were utilized to enhance productivity, improve code quality, and streamline various processes:
+
+- **Codestral**: Codestral was used to assist in generating code snippets, providing suggestions for best practices, and automating repetitive coding tasks. This helped speed up the development process and reduce human error.
+
+- **Gemini CLI**: Gemini CLI was employed for managing project dependencies, automating workflows, and ensuring consistent development environments. It played a crucial role in maintaining the project's infrastructure and facilitating smooth collaboration.
+
+- **V0**: V0 was utilized for prototyping and designing user interfaces. It enabled rapid iteration of UI components, allowing for quick visual feedback and more efficient design decisions.
+
+These AI tools significantly contributed to the development process, enabling a more efficient workflow and a higher quality end product.
+
+## Authors
+- [@ENDIGNOUS_Arnaud](https://github.com/Piryth)
+
