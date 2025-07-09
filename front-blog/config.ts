@@ -12,4 +12,5 @@ const getEnvironmentVariable = (environmentVariable: string): string => {
 export const config = {
   frontUri: getEnvironmentVariable("FRONT_URI"),
   apiUri: getEnvironmentVariable("API_URI"),
+  apiKey: getEnvironmentVariable("API_KEY")
 };

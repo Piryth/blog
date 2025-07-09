@@ -1,11 +1,10 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Github, Linkedin } from "lucide-react"
+import {useState} from "react"
+import {Button} from "@/components/ui/button"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
+import {Github, Linkedin} from "lucide-react"
 import {config} from "@/config";
 
 export default function ContactPage() {
@@ -26,11 +25,8 @@ export default function ContactPage() {
     setErrorMessage('')
 
     try {
-      const response = await fetch(`${config.apiUri}/api/v1/send`, {
+      const response = await fetch(`api/contact/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(formData),
       })
 
@@ -55,7 +51,7 @@ export default function ContactPage() {
   }
 
   const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({...prev, [field]: value}))
   }
 
   return (
@@ -150,13 +146,15 @@ export default function ContactPage() {
                   </div>
 
                   {submitStatus === 'success' && (
-                    <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800">
+                    <div
+                      className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800">
                       Le messagé a été envoyé ! Je reviens vers vous au plus vite.
                     </div>
                   )}
 
                   {submitStatus === 'error' && (
-                    <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800">
+                    <div
+                      className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800">
                       Je n'ai pas pu envoyer le message: {errorMessage}. Veuillez réessayer plus tard.
                     </div>
                   )}

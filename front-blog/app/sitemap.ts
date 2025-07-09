@@ -7,7 +7,9 @@ type Post = {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
-    const res = await fetch(`${config.apiUri}/posts`);
+    const res = await fetch(`${config.apiUri}/posts`, {
+        headers: {'x-api-key': config.apiKey},
+      });
 
     const posts = await res.json() as Post[];
 
