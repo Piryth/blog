@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: database-blog
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  api:
+    build:
+      context: ./api-blog
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_USER: admin
+      DB_PASSWORD: admin
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: database-blog
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials.json
+      API_KEY_FILE: /run/secrets/api_key
+    volumes:
+      - ./api-blog:/app
+      - $GOOGLE_APPLICATION_CREDENTIALS:/run/secrets/gcp-credentials.json:ro
+    secrets:
+      - api_key
+
+  front:
+    build:
+      context: ./front-blog
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+      API_KEY_FILE: /run/secrets/api_key
+    secrets:
+      - api_key
+
+volumes:
+  postgres_data:
+
+secrets:
+  api_key:
+    file: ./api_key.txt

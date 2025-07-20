@@ -1,47 +1,65 @@
-# Personal Portfolio Website with Blog
+# Blog Deployment
 
-Welcome to my personal portfolio website with an integrated blog! This fullstack application is built using Next.js for the frontend and Golang for the backend API.
+This document describes how to deploy the blog application using Docker and Docker Compose.
 
-## Table of Contents
+## Prerequisites
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [AI use](#ai-use)
-- [Authors](#authors)
+- Docker
+- Docker Compose
+- Go
+- A Google Cloud Platform project with a service account key
 
-## Features
+## Deployment
 
-- Display personal projects and professional experience.
-- Blog section to share articles and insights.
-- Responsive design for various devices.
-- User-friendly interface with smooth navigation.
+To deploy the application, you can use the provided `docker-compose.yml` file. This will build the Docker images for the `api` and `front` services and run them in containers.
 
-## Tech Stack
+### Steps
 
-<div id="tools">
+1.  **Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable:**
 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" title="Next.Js" alt="Next.Js" width="40" height="40"/>
+    Before running the application, you need to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the path of your Google Cloud service account key file.
 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" title="Typescript" alt="Typescript" width="40" height="40"/>
+    ```sh
+    export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/gcp-credentials.json
+    ```
 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" title="Go" alt="Go" width="40" height="40"/>
+2.  **Create an API Key File:**
 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" title="PostgreSQL" alt="PostgreSQL" width="40" height="40"/>
+    The `docker-compose.yml` file uses a secret to manage the API key. Create a file named `api_key.txt` in the root of the project and add your desired API key to it.
 
-</div>
+    ```sh
+    echo "your-secret-api-key" > api_key.txt
+    ```
 
-## AI Use
+3.  **Build and Run the Application:**
 
-In the development of this project, several AI tools were utilized to enhance productivity, improve code quality, and streamline various processes:
+    You can build and run the application using the following command:
 
-- **Codestral**: Codestral was used to assist in generating code snippets, providing suggestions for best practices, and automating repetitive coding tasks. This helped speed up the development process and reduce human error.
+    ```sh
+    docker-compose up --build
+    ```
 
-- **Gemini CLI**: Gemini CLI was employed for managing project dependencies, automating workflows, and ensuring consistent development environments. It played a crucial role in maintaining the project's infrastructure and facilitating smooth collaboration.
+    This will build the images for the `api` and `front` services and start the containers. The `--build` flag is only necessary the first time you run the command, or if you have made changes to the Dockerfiles.
 
-- **V0**: V0 was utilized for prototyping and designing user interfaces. It enabled rapid iteration of UI components, allowing for quick visual feedback and more efficient design decisions.
+    Alternatively, you can use the provided `run.sh` script, which will run the `docker-compose up` command for you.
 
-These AI tools significantly contributed to the development process, enabling a more efficient workflow and a higher quality end product.
+    ```sh
+    ./run.sh
+    ```
 
-## Authors
-- [@ENDIGNOUS_Arnaud](https://github.com/Piryth)
+4.  **Access the Application:**
 
+    Once the containers are running, you can access the application at the following URLs:
+
+    -   Frontend: http://localhost:3000
+    -   Backend: http://localhost:8080
+
+### Docker Compose Explained
+
+The `docker-compose.yml` file defines three services:
+
+-   `db`: A PostgreSQL database container.
+-   `api`: The Go backend API.
+-   `front`: The Next.js frontend.
+
+The `depends_on` option ensures that the services are started in the correct order. The `volumes` are used to persist the database data and to mount the application code into the containers for development. The `secrets` are used to securely manage the API key.
