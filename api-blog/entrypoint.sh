@@ -10,4 +10,4 @@ done
 /usr/local/bin/migrate -path /app/database/migrations -database "postgresql://admin:admin@db:5432/database-blog?sslmode=disable" -verbose up
 
 # Run the command passed as arguments
-exec "$@"
+exec /app/app

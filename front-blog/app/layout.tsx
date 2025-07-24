@@ -8,14 +8,14 @@ import {Footer} from "@/components/footer"
 export const metadata: Metadata = {
   title: {
     template: '%s | Arnaud Endignous',
-    default: 'Arnaud Endignous - Ingénieur logiciel & Artisan du Web',
+    default: 'Arnaud Endignous - Ingénieur logiciel & développeur Java',
   },
   description: 'Ingénieur logiciel passioné et artisan du web. Scalabilité et performance',
   keywords: ['Java', 'TypeScript', 'Génie logiciel', 'Web Artisan', 'Scalabilité'],
   authors: [{ name: 'Arnaud Endignous', url: 'https://www.linkedin.com/in/arnaud-endignous/' }],
   openGraph: {
-    title: 'Arnaud Endignous - Ingénieur logiciel & Artisan du Web',
-    description: 'Ingénieur logiciel passioné et artisan du web. Scalabilité et performance',
+    title: 'Arnaud Endignous - Ingénieur logiciel & développeur Java',
+    description: 'Ingénieur logiciel passioné. Scalabilité et performance',
     url: 'https://arnaud-endignous.com',
     siteName: 'Arnaud Endignous',
     images: [
