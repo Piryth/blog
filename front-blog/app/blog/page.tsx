@@ -16,7 +16,9 @@ type Article = {
 }
 
 const fetchArticles = async (): Promise<Article[]> => {
-  const response = await fetch(`${config.apiUri}/api/v1/posts`)
+  const response = await fetch(`${config.apiUri}/api/v1/posts`, {
+        headers: {'x-api-key': config.apiKey},
+      })
 
   if (!response.ok) {
     return []
@@ -25,7 +27,9 @@ const fetchArticles = async (): Promise<Article[]> => {
 }
 
 const fetchCategories = async (): Promise<string[]> => {
-  const response = await fetch(`${config.apiUri}/api/v1/categories`)
+  const response = await fetch(`${config.apiUri}/api/v1/categories`, {
+        headers: {'x-api-key': config.apiKey},
+      })
 
   if (!response.ok) {
     return []
@@ -38,9 +42,6 @@ export default async function BlogPage() {
 
   const articlesData = await fetchArticles()
   const categories = await fetchCategories()
-
-  console.log(articlesData.map(article => {
-    console.log(article.categories)}))
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">

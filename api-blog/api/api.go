@@ -16,6 +16,7 @@ func SetupRoutes(r *gin.Engine, queries *database.Queries, gcsClient *storage.Cl
 	categoryHandler := &handlers.CategoryHandler{Queries: queries}
 
 	v1 := r.Group("/api/v1")
+	v1.Use(handlers.AuthMiddleware())
 
 	// Define the routes
 	v1.POST("/posts", postHandler.CreatePost)

@@ -22,7 +22,9 @@ export default async function BlogPostPage({params}: BlogPostPageProps) {
   const {slug} = await params
 
   const response = await fetch(`${config.apiUri}/api/v1/posts/${slug}`,
-    {method: "GET"})
+    {
+      headers: {'x-api-key': config.apiKey},
+    })
 
   const postData: Article = await response.json();
 

@@ -13,7 +13,9 @@ type Post = {
 }
 
 const fetchPosts = async (): Promise<Post[]> => {
-  const response = await fetch(`${config.apiUri}/api/v1/posts`)
+  const response = await fetch(`${config.apiUri}/api/v1/posts`, {
+    headers: { 'x-api-key': config.apiKey },
+  })
 
   if (!response.ok) {
     return []
