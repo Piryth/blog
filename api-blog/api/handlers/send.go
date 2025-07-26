@@ -3,7 +3,7 @@ package handlers
 import (
 	"blog/api-blog/api/utils"
 	"github.com/gin-gonic/gin"
-	"log"
+	"github.com/rs/zerolog/log"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ func (h *SendHandler) SendMessage(c *gin.Context) {
 	err := utils.SendToNotion(req.Name, req.Email, req.Message)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		log.Println("Error : ", err)
+		log.Error().Err(err).Msg("Failed to send message to Notion")
 		return
 	}
 

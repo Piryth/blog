@@ -2,23 +2,26 @@ package main
 
 import (
 	"blog/api-blog/api"
+	"blog/api-blog/api/middleware"
 	"blog/api-blog/database"
+	"blog/api-blog/logger"
 	"cloud.google.com/go/storage"
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
-	"log"
+	"github.com/rs/zerolog/log"
 	"net/http"
 	"os"
 )
 
 func main() {
+	logger.Init()
 	if os.Getenv("IS_DOCKER") != "true" {
 		err := godotenv.Load(".env")
 		if err != nil {
-			log.Fatalf("Error loading .env file: %v", err)
+			log.Fatal().Err(err).Msg("Error loading .env file")
 		}
 	}
 
@@ -32,18 +35,20 @@ func main() {
 		dbUser, dbName, dbPassword, dbHost, dbPort)
 	pool, err := pgxpool.New(context.Background(), connStr)
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		log.Fatal().Err(err).Msg("Failed to connect to database")
 	}
 	defer pool.Close()
 
 	queries := database.New(pool)
 
-	r := gin.Default()
+	r := gin.New()
 	r.Use(CorsMiddleware())
+	r.Use(gin.Recovery())
+	r.Use(middleware.Logger())
 
 	gcsClient, err := storage.NewClient(context.Background())
 	if err != nil {
-		log.Fatalf("Failed to create GCS client: %v", err)
+		log.Fatal().Err(err).Msg("Failed to create GCS client")
 	}
 	defer gcsClient.Close()
 
@@ -51,7 +56,7 @@ func main() {
 
 	err = r.Run(":8080")
 	if err != nil {
-		log.Fatalf("Failed to start server: %v", err)
+		log.Fatal().Err(err).Msg("Failed to start server")
 	}
 }
 
