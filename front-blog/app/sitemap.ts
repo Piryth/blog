@@ -1,5 +1,6 @@
 import {MetadataRoute} from 'next'
 import {config} from "@/config"
+import {logger} from "@/logger";
 
 type Post = {
   slug: string;
@@ -12,7 +13,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     headers: {'x-api-key': config.apiKey},
   });
 
+  logger.info("Fetching blog posts for ssg")
+
   const posts = await res.json() as Post[];
+
+  logger.info(posts.length + " posts found")
 
   const postsUrls = posts.map(post => ({
     url: `${config.frontUri}/blog/${post.slug}`,
