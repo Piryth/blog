@@ -5,6 +5,7 @@ import {Calendar, Clock, ArrowRight} from "lucide-react"
 import Link from "next/link"
 import {ThumbnailLoader} from "@/components/blog/ThumbnailLoader";
 import {config} from "@/config";
+import {logger} from "@/logger";
 
 type Article = {
   title: string
@@ -21,6 +22,7 @@ const fetchArticles = async (): Promise<Article[]> => {
       })
 
   if (!response.ok) {
+    logger.error("Error while fetching articles ", response.status)
     return []
   }
   return await response.json()
@@ -32,6 +34,7 @@ const fetchCategories = async (): Promise<string[]> => {
       })
 
   if (!response.ok) {
+    logger.error("Error while fetching categories ", response.status)
     return []
   }
   return await response.json()
@@ -42,6 +45,9 @@ export default async function BlogPage() {
 
   const articlesData = await fetchArticles()
   const categories = await fetchCategories()
+
+  logger.info("Fetched " + articlesData.length + " articles and " + categories.length + " categories")
+
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">

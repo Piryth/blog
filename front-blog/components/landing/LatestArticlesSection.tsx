@@ -2,6 +2,7 @@ import {Button} from "@/components/ui/button"
 import {ArrowRight, Calendar} from "lucide-react"
 import Link from "next/link"
 import {config} from "@/config"
+import {logger} from "@/logger";
 
 type Post = {
   title: string,
@@ -16,8 +17,10 @@ const fetchPosts = async (): Promise<Post[]> => {
   const response = await fetch(`${config.apiUri}/api/v1/posts`, {
     headers: { 'x-api-key': config.apiKey },
   })
+  logger.info("Fetching posts")
 
   if (!response.ok) {
+    logger.error("Error while fetching articles ", response.status)
     return []
   }
   return await response.json()
@@ -26,6 +29,7 @@ const fetchPosts = async (): Promise<Post[]> => {
 export default async function LatestPosts() {
 
   const articlesData = await fetchPosts()
+  logger.info(articlesData.length + " articles fetched")
 
   return <section className="container mx-auto px-4 py-16 border-t border-slate-200 dark:border-slate-800">
     <div className="max-w-4xl mx-auto">
