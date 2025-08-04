@@ -9,11 +9,13 @@ type Article = {
   thumbnail_url: string | null;
 };
 
-export async function GET(req: NextRequest, {params}: { params: { slug: string } }) {
-  const {slug} = params;
+export async function GET(
+  req: NextRequest,
+  {params}: { params: Promise<{ postId: string }> }) {
+  const {postId} = await params;
 
   try {
-    const response = await fetch(`${config.apiUri}/api/v1/posts/${slug}`, {
+    const response = await fetch(`${config.apiUri}/api/v1/posts/${postId}`, {
       headers: {'x-api-key': config.apiKey},
     });
     const data: Article = await response.json();

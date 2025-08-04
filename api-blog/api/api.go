@@ -3,15 +3,13 @@ package api
 import (
 	"blog/api-blog/api/handlers"
 	"blog/api-blog/database"
-	"cloud.google.com/go/storage"
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(r *gin.Engine, queries *database.Queries, gcsClient *storage.Client) {
+func SetupRoutes(r *gin.Engine, queries *database.Queries) {
 	// Initialize the PostHandler
 	postHandler := &handlers.PostHandler{Queries: queries}
 	userHandler := &handlers.UserHandler{Queries: queries}
-	imageHandler := &handlers.ImageHandler{GCSClient: gcsClient}
 	sendHandler := &handlers.SendHandler{}
 	categoryHandler := &handlers.CategoryHandler{Queries: queries}
 
@@ -31,11 +29,8 @@ func SetupRoutes(r *gin.Engine, queries *database.Queries, gcsClient *storage.Cl
 	v1.PUT("/users/:id", userHandler.UpdateUser)
 	v1.DELETE("/users/:id", userHandler.DeleteUser)
 
-	v1.POST("/images/upload", imageHandler.UploadImage)
-
 	v1.POST("contact/send", sendHandler.SendMessage)
 
 	v1.GET("/categories", categoryHandler.ListCategories)
 	v1.DELETE("/categories/:name", categoryHandler.DeleteCategory)
-
 }

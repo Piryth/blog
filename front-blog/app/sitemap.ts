@@ -8,9 +8,7 @@ type Post = {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-
   try {
-
     const res = await fetch(`${config.apiUri}/api/v1/posts`, {
       headers: {'x-api-key': config.apiKey},
     });
@@ -18,8 +16,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if(!res.ok) {
       throw new Error(`Failed to fetch posts: ${res.status} ${res.statusText}`);
     }
-
-    logger.info("Fetching blog posts for ssg")
 
     const posts = await res.json() as Post[];
 

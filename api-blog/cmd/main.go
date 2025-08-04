@@ -5,7 +5,6 @@ import (
 	"blog/api-blog/api/middleware"
 	"blog/api-blog/database"
 	"blog/api-blog/logger"
-	"cloud.google.com/go/storage"
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -18,12 +17,11 @@ import (
 
 func main() {
 	logger.Init()
-	if os.Getenv("IS_DOCKER") != "true" {
-		err := godotenv.Load(".env")
-		if err != nil {
-			log.Fatal().Err(err).Msg("Error loading .env file")
-		}
-	}
+
+    err := godotenv.Load(".env")
+    if err != nil {
+        log.Fatal().Err(err).Msg("Error loading .env file")
+    }
 
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
@@ -46,13 +44,7 @@ func main() {
 	r.Use(gin.Recovery())
 	r.Use(middleware.Logger())
 
-	gcsClient, err := storage.NewClient(context.Background())
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to create GCS client")
-	}
-	defer gcsClient.Close()
-
-	api.SetupRoutes(r, queries, gcsClient)
+	api.SetupRoutes(r, queries)
 
 	err = r.Run(":8080")
 	if err != nil {

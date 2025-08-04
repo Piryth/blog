@@ -7,7 +7,7 @@ import ServicesSection from "@/components/landing/ServicesSection";
 import FeaturedWork from "@/components/landing/FeaturedWorkSection";
 import LatestArticles from "@/components/landing/LatestArticlesSection";
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
       <div className="min-h-screen bg-white dark:bg-slate-900">
 
