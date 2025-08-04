@@ -1,47 +1,41 @@
 # --- Builder Stage ---
 FROM golang:1.24.1-alpine AS builder
 
-# Install build dependencies
-RUN apk add --no-cache git ca-certificates
-
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy go.mod and go.sum to download dependencies
+# Copy the go.mod and go.sum files to download dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy the rest of the application source code
+# Copy the source code into the container
 COPY . .
 
-# Build the application statically
-# CGO_ENABLED=0 is important for creating a static binary that can run in a minimal image
-# -ldflags="-w -s" strips debug information, reducing the binary size
-RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o /go/bin/app cmd/main.go
+# Verify the contents of the working directory (for debugging)
+RUN ls -la /app
+
+# Build the Go application
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/main ./cmd/main.go
+
+# Verify the binary was built (for debugging)
+RUN ls -la /app/main
 
 # --- Final Stage ---
 FROM alpine:latest
 
-# Install runtime dependencies
-# Only postgresql-client is needed to check if the database is ready
-RUN apk add --no-cache postgresql-client bash
-
-# Install migrate
-RUN apk add --no-cache curl && \
-    curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz && \
-    mv migrate.linux-amd64 /usr/local/bin/migrate && \
-    apk del curl
+# Install CA certificates for HTTPS support
+RUN apk --no-cache add ca-certificates
 
 WORKDIR /app
 
-# Copy the entrypoint script and migrations from the builder stage
-COPY --from=builder /app/entrypoint.sh .
-COPY --from=builder /app/database/migrations ./database/migrations
+# Copy the binary from the builder stage
+COPY --from=builder /app/main .
 
-# Copy the built application from the builder stage
-COPY --from=builder /go/bin/app .
+# Verify the binary was copied (for debugging)
+RUN ls -la /app/main
 
-# Make the entrypoint script executable
-RUN chmod +x ./entrypoint.sh
+# Expose the port the app runs on
+EXPOSE 8080
 
-# Set the entrypoint
-ENTRYPOINT ["./entrypoint.sh"]
+# Command to run the application
+CMD ["/app/main"]

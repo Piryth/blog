@@ -1,12 +1,13 @@
+"use client"
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Badge} from "@/components/ui/badge"
 import {Calendar, Clock, ArrowRight} from "lucide-react"
 import Link from "next/link"
 import {ThumbnailLoader} from "@/components/blog/ThumbnailLoader";
-import {config} from "@/config";
+import {useEffect, useState} from "react";
 
-type Article = {
+type Post = {
   title: string
   slug: string
   description: string
@@ -15,33 +16,37 @@ type Article = {
   categories: string[]
 }
 
-const fetchArticles = async (): Promise<Article[]> => {
-  const response = await fetch(`${config.apiUri}/api/v1/posts`, {
-        headers: {'x-api-key': config.apiKey},
-      })
+export default function BlogPage() {
 
-  if (!response.ok) {
-    return []
-  }
-  return await response.json()
-}
+  const [postData, setPostData] = useState<Post[]>([]);
+  const [categories, setCategories] = useState<string[]>([])
 
-const fetchCategories = async (): Promise<string[]> => {
-  const response = await fetch(`${config.apiUri}/api/v1/categories`, {
-        headers: {'x-api-key': config.apiKey},
-      })
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await fetch("/api/posts")
 
-  if (!response.ok) {
-    return []
-  }
-  return await response.json()
-}
+      if (!response.ok) {
+        setPostData([]);
+        return;
+      }
 
+      setPostData(await response.json());
+    }
 
-export default async function BlogPage() {
+    const fetchCategories = async () => {
+      const response = await fetch("/api/categories")
+      if (!response.ok) {
+        setCategories([]);
+        return;
+      }
+      setCategories(await response.json());
+    }
 
-  const articlesData = await fetchArticles()
-  const categories = await fetchCategories()
+    fetchPosts()
+    fetchCategories()
+
+  }, [])
+
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
@@ -73,7 +78,7 @@ export default async function BlogPage() {
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8">📌 Pinned Articles</h2>
           <div className="grid lg:grid-cols-2 gap-8">
-            {articlesData.map((post, index) => (
+            {postData.map((post, index) => (
               <Card key={index} className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
                 <div className="relative overflow-hidden">
                   <ThumbnailLoader slug={post.slug}/>

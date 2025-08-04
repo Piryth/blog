@@ -4,7 +4,7 @@ import (
 	"blog/api-blog/database"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
-	"log"
+	"github.com/rs/zerolog/log"
 	"net/http"
 	"strconv"
 )
@@ -61,7 +61,7 @@ func (h *PostHandler) GetPost(c *gin.Context) {
 	post, err := h.Queries.GetPost(c, c.Param("slug"))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		log.Println("Error: ", err.Error())
+		log.Error().Err(err).Msg("Failed to get post")
 		return
 	}
 
@@ -78,7 +78,7 @@ func (h *PostHandler) ListPosts(c *gin.Context) {
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		log.Println("Error: ", err.Error())
+		log.Error().Err(err).Msg("Failed to list posts")
 		return
 	}
 
@@ -91,7 +91,7 @@ func (h *PostHandler) ListPosts(c *gin.Context) {
 
 func (h *PostHandler) UpdatePost(c *gin.Context) {
 	baseSlug := c.Param("slug")
-	log.Print(baseSlug + " is the slug")
+	log.Info().Msg(baseSlug + " is the slug")
 
 	var req struct {
 		Title        string   `json:"title"`
@@ -120,7 +120,7 @@ func (h *PostHandler) UpdatePost(c *gin.Context) {
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		log.Print(err.Error())
+		log.Error().Err(err).Msg("Failed to update post")
 		return
 	}
 

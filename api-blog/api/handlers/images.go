@@ -5,8 +5,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"time"
@@ -51,7 +51,7 @@ func (h *ImageHandler) UploadImage(c *gin.Context) {
 	}
 	if err := wc.Close(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to close writer "})
-		log.Println(err.Error())
+		log.Error().Err(err).Msg("Failed to close writer")
 		return
 	}
 
